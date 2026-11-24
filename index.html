@@ -1101,7 +1101,7 @@
           <div class="card accent-left">
             <h3>Conclusiones clave</h3>
             <ul class="bullet-list">
-              <li><strong>Alta disponibilidad y elasticidad:</strong> Tolera caída de servidor (reemplazo en <strong>269 s</strong> sin corte) y de zona (ALB + RDS Multi-AZ), escalando 2 → 4 → 2 automáticamente.</li>
+              <li><strong>Alta disponibilidad y elasticidad:</strong> En falla de instancia el reemplazo quedó sano en <strong>269 s</strong> (<strong>50 de 51</strong> respuestas exitosas), con ALB + RDS Multi-AZ y escalado 2 → 4 → 2.</li>
               <li><strong>Reproducibilidad IaC:</strong> Tres pilas modulares de CloudFormation reconstruyen red, datos y aplicación en minutos.</li>
               <li><strong>Migración limpia:</strong> Estrategia <em>Replatform</em> sin alterar código, integridad SHA-256 exacta y recuperación probada (<strong>498 s RTO</strong>, <strong>0 RPO</strong>).</li>
               <li><strong>Desacoplamiento:</strong> Extraer MySQL del servidor EC2 habilitó instancias intercambiables sin estado.</li>
