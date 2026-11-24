@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" data-nav-pos="bottom" data-anim="on">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librería Cielo · Centro de Datos Virtualizado en AWS (Unidad 3)</title>
+  <link rel="stylesheet" href="deck-base.css" />
+  <link rel="stylesheet" href="animaciones.css" />
+  <style>
+    .speaker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: calc(0.78rem * var(--scale-meta));
+      font-weight: 700;
+      color: var(--slide-color, var(--c-sec1));
+      background: color-mix(in srgb, var(--slide-color, var(--c-sec1)) 12%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--slide-color, var(--c-sec1)) 28%, transparent);
+      margin-left: 8px;
+      vertical-align: middle;
+      text-transform: none;
+      letter-spacing: 0.01em;
+    }
+    .net-svg-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: center;
+      flex-shrink: 1;
+    }
+    .net-svg-wrap svg { width: 100%; max-width: 880px; max-height: 185px; height: auto; display: block; }
+    [data-stepper].full-body { gap: 11px; justify-content: center; overflow-y: visible; }
+    [data-stepper] .step-bar { padding: 8px 14px; }
+    .code-pre .code-line { display: block; padding: 1px 6px; }
+    .sg-chain { display: flex; flex-direction: column; gap: 10px; }
+    .sg-node {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--sg-c, var(--slide-color));
+      border-radius: 12px;
+      padding: 11px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .sg-node strong { color: var(--text); font-size: calc(0.98rem * var(--scale-title)); }
+    .sg-node span { color: var(--muted); font-size: calc(0.88rem * var(--scale-body)); }
+    .sg-arrow {
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.82rem;
+      color: var(--slide-color);
+      letter-spacing: 0.04em;
+    }
+    .badge-id {
+      font-family: Consolas, monospace;
+      font-size: calc(0.8rem * var(--scale-meta));
+      background: color-mix(in srgb, var(--slide-color) 11%, var(--surface-alt));
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 7px;
+      border: 1px solid color-mix(in srgb, var(--slide-color) 25%, transparent);
+      white-space: nowrap;
+    }
+    .step-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--slide-color);
+      border-radius: 14px;
+      padding: 13px 14px;
+      cursor: pointer;
+    }
+    .step-card h4 { font-size: calc(0.96rem * var(--scale-title)); color: var(--text); margin: 4px 0 6px; }
+    .step-card p { font-size: calc(0.86rem * var(--scale-body)); color: var(--muted); line-height: 1.4; }
+    .step-num { font-size: calc(0.76rem * var(--scale-meta)); font-weight: 800; color: var(--slide-color); text-transform: uppercase; }
+    .compact-table th, .compact-table td { padding: 7px 10px; font-size: calc(0.85rem * var(--scale-meta)); }
+    .role-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 1060px;
+      margin-top: 22px;
+      text-align: left;
+    }
+    .role-box {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--r-c, #2563eb);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .role-box small {
+      display: block;
+      font-size: calc(0.76rem * var(--scale-meta));
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--r-c, #2563eb);
+      margin-bottom: 4px;
+    }
+    .role-box strong { display: block; font-size: calc(0.98rem * var(--scale-title)); color: var(--text); margin-bottom: 4px; }
+    .role-box span { font-size: calc(0.86rem * var(--scale-body)); color: var(--muted); line-height: 1.38; display: block; }
+    @media (max-width: 980px) {
+      .step-grid-4, .role-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-progress"><div id="progressFill" class="top-progress-fill"></div></div>
+
+  <main class="deck">
+
+    <!-- ==================== 01 · PORTADA ==================== -->
+    <section class="slide slide-title active" data-group="0" data-color="#1e293b" data-kind="title" data-title="Portada y Roles del Equipo" style="--slide-color:#1e293b">
+      <div class="title-pill anim d1">Cloud Computing · Producto Académico Unidad 3 · Grupo I</div>
+      <h1 class="anim d2">Librería Cielo: Centro de Datos Virtualizado en AWS</h1>
+      <p class="title-sub anim d3">
+        Migración <em>Replatform</em> desde instancia única hacia una arquitectura multi-zona con IaC (CloudFormation), alta disponibilidad, seguridad U2, recuperación ante desastres y propuesta Big Data + IA.
+      </p>
+      <div class="role-strip anim d4">
+        <div class="role-box" style="--r-c:#2563eb">
+          <small>Bloque 1 · Coordinación y Cómputo</small>
+          <strong>Jhon Alex Gutierrez Morales</strong>
+          <span>Contexto, selección de servicios, <code>03-aplicacion.yaml</code>, ALB, ASG, CloudWatch y falla (269 s).</span>
+        </div>
+        <div class="role-box" style="--r-c:#7c3aed">
+          <small>Bloque 2 · Red e IaC</small>
+          <strong>Uhziel Elí Condori Rojas</strong>
+          <span><code>01-red.yaml</code> (25 recursos), VPC <code>10.0.0.0/16</code>, 6 subredes, tablas de rutas y SG encadenados sin SSH.</span>
+        </div>
+        <div class="role-box" style="--r-c:#059669">
+          <small>Bloque 3 · Datos y Migración</small>
+          <strong>William David Ortiz Mamani</strong>
+          <span><code>02-datos.yaml</code>, RDS Multi-AZ cifrado, S3 seguro, Replatform 7R, SHA-256 (14 tablas) y RTO 498 s.</span>
+        </div>
+      </div>
+      <div class="cover-meta anim d4" style="margin-top:18px; padding-top:14px;">
+        <span><strong>Docente:</strong> Mg. Moisés Condori Chañi</span>
+        <span><strong>Cuenta AWS:</strong> <code>496739439260</code> (<code>us-east-1</code>)</span>
+        <span><strong>Entrega:</strong> 25 de noviembre de 2026</span>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN 01 · BLOQUE 1: JHON ALEX ==================== -->
+    <section class="slide slide-title" data-group="1" data-color="#2563eb" data-kind="title" data-title="01 · Bloque Jhon Alex (Cómputo)" style="--slide-color:#2563eb">
+      <div class="title-pill anim d1">Bloque 1 · Expositor: Jhon Alex Gutierrez Morales</div>
+      <h1 class="anim d2">Contexto, Cómputo, Escalado y Monitoreo</h1>
+      <p class="title-sub anim d3">Evolución de Librería Cielo (U1 → U2 → U3), arquitectura de aplicación (<code>03-aplicacion.yaml</code>), CloudWatch y prueba de falla.</p>
+      <span class="section-num-bg">01</span>
+    </section>
+
+    <!-- 1.1 EVOLUCIÓN Y COMPONENTES -->
+    <section class="slide" data-group="1" data-color="#2563eb" data-kind="content" data-title="1.1 Librería Cielo y Evolución U1→U3" style="--slide-color:#2563eb">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">01 · Contexto del Proyecto <span class="speaker-badge">Jhon Alex Gutierrez</span></div>
+        <h2>1.1 Aplicación Librería Cielo y Estado «Antes» vs. «Después»</h2>
+        <p class="header-summary">Sistema de ventas, catálogo, servicios e inventario (8 contenedores) evolucionado desde U1 y U2 hacia la nube multi-zona.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig01_origen_antes.png","caption":"Figura 1 · Estado «Antes» (U1 reconstruido): stack completo + MySQL en 1 EC2"},
+          {"src":"img/fig02_e1_app_origen_88_ventas.jpg","caption":"Figura 2 (E1) · Aplicación de origen operativa con 88 ventas registradas"},
+          {"src":"img/fig03_arquitectura_u3.png","caption":"Figura 3 · Centro de datos virtualizado implementado en Unidad 3 (2 AZ)"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evolución arquitectónica de Librería Cielo" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 3</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <table class="clean-table compact-table">
+            <thead>
+              <tr><th>Componente</th><th>Puerto</th><th>Función y datos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Angular + Nginx</strong></td><td><code>80</code></td><td>Interfaz web y proxy <code>/api</code> hacia Gateway</td></tr>
+              <tr><td><strong>ms-gateway-service</strong></td><td><code>8095</code></td><td>Enrutamiento explícito y validación JWT</td></tr>
+              <tr><td><strong>Eureka / Config</strong></td><td><code>8090 / 7071</code></td><td>Descubrimiento y configuración centralizada</td></tr>
+              <tr><td><strong>ms-auth</strong></td><td><code>8081</code></td><td>Usuarios, roles (ADMIN/CAJERO/ALMACEN), BCrypt</td></tr>
+              <tr><td><strong>ms-book / ms-cliente</strong></td><td><code>8082 / 8083</code></td><td>Catálogo, categorías, stock, clientes y vendedores</td></tr>
+              <tr><td><strong>ms-venta</strong></td><td><code>8084</code></td><td>Carritos, ventas (Efectivo/Yape/Plin), servicios</td></tr>
+            </tbody>
+          </table>
+          <div class="result-pill">
+            <strong>Trayectoria:</strong> En U1 corría en 1 EC2; en U2 se dividió en 3 cuentas con VPC Peering para el plan de seguridad; en U3 se consolidó un centro de datos IaC con alta disponibilidad.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.2 LIMITACIONES Y SELECCIÓN DE SERVICIOS -->
+    <section class="slide" data-group="1" data-color="#2563eb" data-kind="content" data-title="1.2 Selección y Justificación de Servicios" style="--slide-color:#2563eb">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">01 · Decisiones de Arquitectura <span class="speaker-badge">Jhon Alex Gutierrez</span></div>
+        <h2>1.2 Limitaciones del Origen y Comparativa Multinube</h2>
+        <p class="header-summary">Criterio basado en disponibilidad, seguridad, costo y restricciones reales del Learner Lab (LabRole y sesiones de 4 h).</p>
+      </header>
+      <div class="full-body">
+        <table class="clean-table compact-table anim d2">
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Servicio AWS Elegido</th>
+              <th>Alternativa AWS</th>
+              <th>Equivalente Azure / GCP</th>
+              <th>Justificación técnica clave</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Red</strong></td>
+              <td>VPC + NAT Gateway</td>
+              <td>Instancia NAT propia</td>
+              <td>VNet+NAT / VPC+Cloud NAT</td>
+              <td>Administrado y redundante en AZ sin parches ni SPOF</td>
+            </tr>
+            <tr class="hl">
+              <td><strong>Cómputo</strong></td>
+              <td>EC2 + ASG + Docker</td>
+              <td>ECS Fargate / EKS</td>
+              <td>VMSS / Managed Instance Grp</td>
+              <td>Reutiliza AMI sin reescribir (Replatform); ECS/EKS requieren roles extra</td>
+            </tr>
+            <tr>
+              <td><strong>Balanceo</strong></td>
+              <td>Application Load Balancer</td>
+              <td>Network Load Balancer</td>
+              <td>App Gateway / Cloud LB HTTP(S)</td>
+              <td>Capa 7 con health check HTTP y soporte futuro ACM HTTPS</td>
+            </tr>
+            <tr>
+              <td><strong>Datos</strong></td>
+              <td>RDS MySQL 8.4 Multi-AZ</td>
+              <td>Aurora / MySQL en EC2</td>
+              <td>Azure MySQL Flex / Cloud SQL</td>
+              <td>Mismo motor que el origen, failover automático y backups 7 días</td>
+            </tr>
+            <tr>
+              <td><strong>Objetos / Secretos</strong></td>
+              <td>S3 + Parameter Store + SSM</td>
+              <td>EFS + Secrets Mgr + Bastión</td>
+              <td>Blob+KeyVault / GCS+IAP</td>
+              <td>S3 (11 nueves), SecureString sin costo y acceso sin puerto 22</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="card accent-left anim d3">
+          <h3>¿Por qué <code>t3.medium</code> (2 vCPU, 4 GiB) y no <code>t3.micro</code> / <code>t3.small</code>?</h3>
+          <p>Cada instancia levanta simultáneamente <strong>8 JVM (Spring Boot + Eureka + Config + Gateway) y Nginx</strong>, consumiendo ≈ 3 GiB con límites de memoria; en <code>t3.small</code> (2 GiB) los contenedores colapsarían por OOM. Las instancias son <em>stateless</em> (comparten RDS y secreto JWT).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.3 PILA APLICACIÓN, ALB Y ASG -->
+    <section class="slide" data-group="1" data-color="#2563eb" data-kind="content" data-title="1.3 Pila 03-aplicacion.yaml, ALB y ASG" style="--slide-color:#2563eb">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">01 · Capa de Cómputo <span class="speaker-badge">Jhon Alex Gutierrez</span></div>
+        <h2>1.3 Pila <code>03-aplicacion.yaml</code>, Plantilla de Lanzamiento y ALB</h2>
+        <p class="header-summary">Despliegue automático de instancias intercambiables en subredes privadas detrás de un balanceador Capa 7.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig35_e13_ami_app.jpg","caption":"Figura 35 (E13) · AMI migrada del servidor de origen con Docker e imágenes"},
+          {"src":"img/fig09_e9_alb_target_healthy.jpg","caption":"Figura 9 (E9) · Target Group del ALB con instancias Healthy en us-east-1a y us-east-1b"},
+          {"src":"img/fig30_e9_instancias_asg_2az.jpg","caption":"Figura 30 (E9) · Instancias del Auto Scaling Group distribuidas en dos zonas"},
+          {"src":"img/fig10_e10_app_alb_88_ventas.jpg","caption":"Figura 10 (E10) · Sistema funcionando por el DNS del ALB con las 88 ventas migradas"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evidencias de AMI, ALB y Auto Scaling" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 4</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card accent-left">
+            <h3>Componentes de <code>libreria-u3-aplicacion</code> (10:24)</h3>
+            <ul class="bullet-list">
+              <li><strong>Launch Template (<code>Libreria-U3-LT</code>):</strong> Usa <code>ami-06b055b497bf295a3</code>, <code>IMDSv2</code> obligatorio, EBS <code>gp3</code> cifrado y monitoreo detallado.</li>
+              <li><strong>User Data seguro:</strong> Lee secretos de Parameter Store (<code>/libreria/u3/app-env</code>), descarga <code>compose-u3.yml</code> de S3 y apunta a RDS vía <code>DB_HOST</code>.</li>
+              <li><strong>ALB + Target Group:</strong> Verifica <code>/api/actuator/health</code> (atraviesa Nginx y Gateway); solo enruta cuando toda la cadena responde <code>UP</code>.</li>
+              <li><strong>Auto Scaling Group:</strong> Mínimo <strong>2</strong>, máximo <strong>4</strong> instancias; gracia ELB de <code>420 s</code> y objetivo del <strong>50 % de CPU</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.4 MONITOREO Y ESCALADO -->
+    <section class="slide" data-group="1" data-color="#2563eb" data-kind="content" data-title="1.4 CloudWatch y Prueba de Escalado" style="--slide-color:#2563eb">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">01 · Observabilidad y Elasticidad <span class="speaker-badge">Jhon Alex Gutierrez</span></div>
+        <h2>1.4 Dashboard CloudWatch, Alarmas y Escalado (2 → 4 → 2)</h2>
+        <p class="header-summary">Monitoreo unificado de ASG, ALB y RDS que disparó el escalado automático al superar el umbral de CPU.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig12_e11_dashboard_cpu_asg.jpg","caption":"Figura 12 (E11) · Dashboard: pico de CPU al iniciar las 8 JVM y escalado 2 → 4"},
+          {"src":"img/fig13_asg_historial_2_a_4.jpg","caption":"Figura 13 · Historial de actividad ASG: cambio automático de capacidad 2 a 4"},
+          {"src":"img/fig31_e11_alarmas.jpg","caption":"Figura 31 (E11) · Alarmas configuradas en CloudWatch con notificaciones SNS"},
+          {"src":"img/fig32_e11_dashboard_rds.jpg","caption":"Figura 32 (E11) · Panel de métricas de RDS y estado de alarmas en el dashboard"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Dashboard CloudWatch y prueba de escalado" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 4</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card accent-left">
+            <h3>Dashboard y 3 Alarmas + Tema SNS</h3>
+            <ul class="bullet-list">
+              <li><code>Libreria-U3-CPU-ASG-Alta</code>: CPU &gt; <strong>70 %</strong> durante 2 min.</li>
+              <li><code>Libreria-U3-RDS-Almacenamiento-Libre-Bajo</code>: libre &lt; <strong>2 GiB</strong>.</li>
+              <li><code>Libreria-U3-ALB-Destinos-No-Sanos</code>: &gt; <strong>0</strong> destinos fallando (2 min).</li>
+            </ul>
+          </div>
+          <div class="card accent-left">
+            <h3>Cronología real de escalado (17/11/2026)</h3>
+            <p>El arranque de 8 JVM llevó la CPU cerca del 100 %. <code>TargetTracking-AlarmHigh</code> (&gt;50 % por 3 min) pasó a <strong>ALARM a las 15:30:07 UTC</strong> y subió de <strong>2 a 4 instancias</strong> (sanas a las 10:35 Lima). Al caer la carga (&lt;35 % por 15 min), <code>AlarmLow</code> devolvió el grupo a <strong>2</strong> sin intervención.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.5 PRUEBA DE FALLA DE INSTANCIA -->
+    <section class="slide" data-group="1" data-color="#2563eb" data-kind="content" data-title="1.5 Prueba de Falla de Instancia (269 s)" style="--slide-color:#2563eb">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">01 · Alta Disponibilidad Probada <span class="speaker-badge">Jhon Alex Gutierrez</span></div>
+        <h2>1.5 Prueba de Falla de Instancia: Reemplazo en 269 s sin Corte</h2>
+        <p class="header-summary">Se terminó una EC2 en vivo mientras un script consultaba el ALB cada 5 segundos para medir impacto real.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig14_e12_asg_falla_reemplazo.jpg","caption":"Figura 14 (E12) · Actividad del ASG: instancia terminada y reemplazo lanzado automáticamente"},
+          {"src":"img/fig33_e12_instancia_reemplazo.jpg","caption":"Figura 33 (E12) · Nueva instancia en servicio Healthy en el Auto Scaling Group"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Prueba de falla de instancia en ASG" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 2</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="kpi-row">
+            <div class="kpi">
+              <div class="val">87 s</div>
+              <div class="lbl">Lanzamiento de reemplazo</div>
+            </div>
+            <div class="kpi">
+              <div class="val">269 s</div>
+              <div class="lbl">RTO total hasta Healthy</div>
+            </div>
+            <div class="kpi">
+              <div class="val">50 / 51</div>
+              <div class="lbl">Peticiones HTTP exitosas</div>
+            </div>
+          </div>
+          <div class="card accent-left">
+            <h3>Detalle de la prueba (10:35:43 → 10:40:13)</h3>
+            <p>Al terminar manualmente <code>i-0ca4ff71592203ea0</code>, el ASG la retiró, lanzó <code>i-0eae36d65c17811cb</code> y la dejó <strong>Healthy en 4 min 29 s</strong>. La aplicación siguió operando con la segunda instancia (<strong>RPO = 0</strong> por diseño sin estado).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN 02 · BLOQUE 2: UHZIEL ELÍ ==================== -->
+    <section class="slide slide-title" data-group="2" data-color="#7c3aed" data-kind="title" data-title="02 · Bloque Uhziel Elí (Red e IaC)" style="--slide-color:#7c3aed">
+      <div class="title-pill anim d1">Bloque 2 · Expositor: Uhziel Elí Condori Rojas</div>
+      <h1 class="anim d2">Arquitectura de Red, Seguridad Encadenada e IaC</h1>
+      <p class="title-sub anim d3">Plan de direccionamiento <code>10.0.0.0/16</code>, 6 subredes en 2 AZ, tablas de rutas, Security Groups sin SSH y pila <code>01-red.yaml</code>.</p>
+      <span class="section-num-bg">02</span>
+    </section>
+
+    <!-- 2.1 PLAN DE DIRECCIONAMIENTO -->
+    <section class="slide" data-group="2" data-color="#7c3aed" data-kind="content" data-title="2.1 Plan de Direccionamiento (6 Subredes)" style="--slide-color:#7c3aed">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">02 · Topología de Red <span class="speaker-badge">Uhziel Elí Condori</span></div>
+        <h2>2.1 Plan de Direccionamiento IPv4 e IDs Desplegados</h2>
+        <p class="header-summary">Segmentación de la VPC <code>10.0.0.0/16</code> en tres capas paralelas sobre <code>us-east-1a</code> y <code>us-east-1b</code>.</p>
+      </header>
+      <div class="full-body">
+        <div class="kpi-row anim d2">
+          <div class="kpi">
+            <div class="val">10.0.0.0/16</div>
+            <div class="lbl">VPC principal con DNS habilitado</div>
+          </div>
+          <div class="kpi">
+            <div class="val">6 Subredes</div>
+            <div class="lbl">3 capas × 2 zonas (us-east-1a / 1b)</div>
+          </div>
+          <div class="kpi">
+            <div class="val">25 Recursos</div>
+            <div class="lbl">Desplegados en 01-red.yaml</div>
+          </div>
+        </div>
+        <table class="clean-table anim d3">
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Zona A (<code>us-east-1a</code>)</th>
+              <th>Zona B (<code>us-east-1b</code>)</th>
+              <th>Ruta por defecto (<code>0.0.0.0/0</code>)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pública</strong><br><small>ALB y NAT Gateway</small></td>
+              <td><code>10.0.1.0/24</code><br><small><code>subnet-09666b56eb68c2e2c</code></small></td>
+              <td><code>10.0.2.0/24</code><br><small><code>subnet-0be4aaaefb295c5ed</code></small></td>
+              <td>Internet Gateway<br><small><code>igw-058b56172d559739c</code></small></td>
+            </tr>
+            <tr class="hl">
+              <td><strong>Privada (Aplicación)</strong><br><small>Instancias EC2 del ASG</small></td>
+              <td><code>10.0.3.0/24</code><br><small><code>subnet-02114e4b02412cde4</code></small></td>
+              <td><code>10.0.4.0/24</code><br><small><code>subnet-0aa27ac8d0b7c2188</code></small></td>
+              <td>NAT Gateway (en subred pública A)<br><small><code>nat-0ff6ae2c6a46f2a45</code></small></td>
+            </tr>
+            <tr>
+              <td><strong>Privada (Datos)</strong><br><small>Amazon RDS Multi-AZ</small></td>
+              <td><code>10.0.5.0/24</code><br><small><code>subnet-0daa290586d84219f</code></small></td>
+              <td><code>10.0.6.0/24</code><br><small><code>subnet-0138b5eb6607d0a2e</code></small></td>
+              <td><strong>Sin salida a Internet</strong> (solo tráfico local <code>10.0.0.0/16</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2.2 FLUJO DE TRÁFICO INTERACTIVO -->
+    <section class="slide" data-group="2" data-color="#7c3aed" data-kind="content" data-title="2.2 Recorrido del Tráfico (Paso a Paso)" style="--slide-color:#7c3aed">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">02 · Topología de Red <span class="speaker-badge">Uhziel Elí Condori</span></div>
+        <h2>2.2 Flujo de Tráfico por Capas y Aislamiento de Internet</h2>
+        <p class="header-summary">Las subredes internas carecen de IP pública; el tráfico entra solo por el ALB y sale de forma controlada por NAT.</p>
+      </header>
+      <div class="full-body" data-stepper>
+        <div class="net-svg-wrap anim d2">
+          <svg viewBox="0 0 920 176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de flujo de red VPC Librería Cielo">
+            <rect x="14" y="46" width="110" height="84" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+            <text x="69" y="83" fill="#0f172a" font-family="Segoe UI" font-size="15" font-weight="700" text-anchor="middle">Internet</text>
+            <text x="69" y="104" fill="#475569" font-family="Consolas" font-size="11.5" text-anchor="middle">HTTP/HTTPS</text>
+
+            <path d="M128 88 H168" stroke="#7c3aed" stroke-width="3" class="svg-draw" style="--d:0.1s"/>
+
+            <rect x="172" y="46" width="108" height="84" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+            <text x="226" y="81" fill="#0f172a" font-family="Segoe UI" font-size="14" font-weight="700" text-anchor="middle">IGW</text>
+            <text x="226" y="103" fill="#475569" font-family="Consolas" font-size="11" text-anchor="middle">igw-058b...</text>
+
+            <path d="M284 72 H332" stroke="#7c3aed" stroke-width="3" class="svg-draw" style="--d:0.25s"/>
+            <path d="M284 128 H332" stroke="#d97706" stroke-width="2.5" stroke-dasharray="5 4" class="svg-draw" style="--d:0.3s"/>
+
+            <rect x="336" y="12" width="176" height="152" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+            <text x="424" y="32" fill="#7c3aed" font-family="Segoe UI" font-size="12" font-weight="800" text-anchor="middle">SUBREDES PÚBLICAS</text>
+            <text x="424" y="47" fill="#475569" font-family="Consolas" font-size="11" text-anchor="middle">10.0.1.0/24 · 10.0.2.0/24</text>
+            <rect x="352" y="56" width="144" height="40" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+            <text x="424" y="81" fill="#0f172a" font-family="Segoe UI" font-size="13" font-weight="700" text-anchor="middle">ALB (Capa 7)</text>
+            <rect x="352" y="106" width="144" height="44" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text x="424" y="126" fill="#0f172a" font-family="Segoe UI" font-size="12.5" font-weight="700" text-anchor="middle">NAT Gateway</text>
+            <text x="424" y="142" fill="#92400e" font-family="Consolas" font-size="10.5" text-anchor="middle">nat-0ff6... (AZ-A)</text>
+
+            <path d="M516 76 H556" stroke="#7c3aed" stroke-width="3" class="svg-draw" style="--d:0.4s"/>
+            <path d="M556 128 H516" stroke="#d97706" stroke-width="2.5" stroke-dasharray="5 4" class="svg-draw" style="--d:0.45s"/>
+
+            <rect x="560" y="12" width="168" height="152" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+            <text x="644" y="32" fill="#059669" font-family="Segoe UI" font-size="12" font-weight="800" text-anchor="middle">PRIVADA · APP</text>
+            <text x="644" y="47" fill="#475569" font-family="Consolas" font-size="11" text-anchor="middle">10.0.3.0/24 · 10.0.4.0/24</text>
+            <rect x="574" y="60" width="140" height="58" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+            <text x="644" y="84" fill="#0f172a" font-family="Segoe UI" font-size="13" font-weight="700" text-anchor="middle">EC2 ASG (2–4)</text>
+            <text x="644" y="102" fill="#475569" font-family="Segoe UI" font-size="11" text-anchor="middle">Sin IP pública</text>
+            <text x="644" y="142" fill="#065f46" font-family="Segoe UI" font-size="11" font-weight="700" text-anchor="middle">Admin: SSM (sin SSH)</text>
+
+            <path d="M732 88 H768" stroke="#059669" stroke-width="3" class="svg-draw" style="--d:0.6s"/>
+
+            <rect x="772" y="12" width="134" height="152" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+            <text x="839" y="32" fill="#dc2626" font-family="Segoe UI" font-size="12" font-weight="800" text-anchor="middle">PRIVADA · DATOS</text>
+            <text x="839" y="47" fill="#475569" font-family="Consolas" font-size="10.5" text-anchor="middle">10.0.5.0/24 · .6.0/24</text>
+            <rect x="784" y="60" width="110" height="58" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+            <text x="839" y="85" fill="#0f172a" font-family="Segoe UI" font-size="13" font-weight="700" text-anchor="middle">RDS MySQL</text>
+            <text x="839" y="103" fill="#475569" font-family="Consolas" font-size="11" text-anchor="middle">Multi-AZ :3306</text>
+            <text x="839" y="142" fill="#991b1b" font-family="Segoe UI" font-size="11" font-weight="700" text-anchor="middle">0 salida a Internet</text>
+          </svg>
+        </div>
+
+        <div class="step-grid-4 anim d3">
+          <div class="step-card" data-step data-step-msg="Paso 1: El tráfico entra por el IGW hacia el ALB en las subredes públicas 10.0.1.0/24 y 10.0.2.0/24.">
+            <span class="step-num">Paso 01 · Entrada</span>
+            <h4>Internet → ALB</h4>
+            <p>Único punto expuesto a Internet (80/443) balanceado en dos zonas.</p>
+          </div>
+          <div class="step-card" data-step data-step-msg="Paso 2: El ALB envía solicitudes al ASG en las subredes privadas 10.0.3.0/24 y 10.0.4.0/24.">
+            <span class="step-num">Paso 02 · Aplicación</span>
+            <h4>ALB → EC2 Privadas</h4>
+            <p>Instancias sin IP pública ejecutando el stack de microservicios.</p>
+          </div>
+          <div class="step-card" data-step data-step-msg="Paso 3: Las EC2 consultan RDS MySQL (:3306) en las subredes privadas 10.0.5.0/24 y 10.0.6.0/24.">
+            <span class="step-num">Paso 03 · Datos</span>
+            <h4>App → RDS Privada</h4>
+            <p>Tabla de rutas solo local: la base de datos nunca alcanza ni recibe Internet.</p>
+          </div>
+          <div class="step-card" data-step data-step-msg="Paso 4: Las EC2 descargan desde S3 o Parameter Store únicamente mediante el NAT Gateway.">
+            <span class="step-num">Paso 04 · Salida</span>
+            <h4>App → NAT → IGW</h4>
+            <p>Salida unidireccional segura sin abrir acceso entrante desde Internet.</p>
+          </div>
+        </div>
+
+        <div class="step-bar anim d4">
+          <div class="step-status" data-step-status data-step-default="Pulsa <strong>Siguiente paso</strong> para recorrer el flujo de red por capas."></div>
+          <div style="display:flex; gap:8px; flex-shrink:0;">
+            <button class="nav-btn" data-step-prev>◀ Anterior</button>
+            <button class="nav-btn" data-step-next>Siguiente paso ▶</button>
+            <button class="nav-btn" data-step-reset>↺ Ver todo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.3 EVIDENCIAS DE SUBREDES Y RUTAS -->
+    <section class="slide" data-group="2" data-color="#7c3aed" data-kind="content" data-title="2.3 Evidencias Subredes y Tablas de Rutas" style="--slide-color:#7c3aed">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">02 · Evidencias en Consola <span class="speaker-badge">Uhziel Elí Condori</span></div>
+        <h2>2.3 Subredes y Tablas de Rutas Verificadas en AWS (E3, E4)</h2>
+        <p class="header-summary">Las tres tablas de rutas garantizan separación física de tráfico antes de llegar a los Security Groups.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig05_e3_seis_subredes.jpg","caption":"Figura 5 (E3) · Las 6 subredes con su CIDR, zona de disponibilidad y tabla de rutas"},
+          {"src":"img/fig19_e4_ruta_publica.jpg","caption":"Figura 19 (E4) · Tabla de rutas pública dirigida al Internet Gateway"},
+          {"src":"img/fig06_e4_ruta_privada_app.jpg","caption":"Figura 6 (E4) · Tabla de rutas privada de aplicación: 0.0.0.0/0 → NAT Gateway"},
+          {"src":"img/fig20_e4_ruta_datos.jpg","caption":"Figura 20 (E4) · Tabla de rutas privada de datos: únicamente tráfico local VPC"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Subredes y tablas de rutas en AWS" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 4</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card accent-left">
+            <h3>Verificación por tabla de enrutamiento</h3>
+            <ul class="bullet-list">
+              <li><strong>Pública (<code>10.0.1.0/24</code>, <code>10.0.2.0/24</code>):</strong> Asignación automática de IP pública y salida directa por <code>igw-058b56172d559739c</code>.</li>
+              <li><strong>Privada App (<code>10.0.3.0/24</code>, <code>10.0.4.0/24</code>):</strong> Todo tráfico externo sale por <code>nat-0ff6ae2c6a46f2a45</code> (ubicado en AZ-A).</li>
+              <li><strong>Privada Datos (<code>10.0.5.0/24</code>, <code>10.0.6.0/24</code>):</strong> Sin entrada <code>0.0.0.0/0</code>; únicamente ruta local <code>10.0.0.0/16</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.4 SECURITY GROUPS ENCADENADOS -->
+    <section class="slide" data-group="2" data-color="#7c3aed" data-kind="content" data-title="2.4 Security Groups Encadenados (E5)" style="--slide-color:#7c3aed">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">02 · Seguridad de Red <span class="speaker-badge">Uhziel Elí Condori</span></div>
+        <h2>2.4 Grupos de Seguridad Encadenados y Cero Puerto 22</h2>
+        <p class="header-summary">Las reglas referencian IDs de grupos de seguridad (no IPs estáticas) y eliminan el bastión SSH.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig21_e5_sg_alb.jpg","caption":"Figura 21 (E5) · SG-ALB: puertos 80 y 443 abiertos hacia Internet"},
+          {"src":"img/fig22_e5_sg_app.jpg","caption":"Figura 22 (E5) · SG-App: puerto 80 permitido únicamente desde SG-ALB"},
+          {"src":"img/fig07_e5_sg_db.jpg","caption":"Figura 7 (E5) · SG-DB: puerto MySQL 3306 permitido solo desde SG-App"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evidencia de grupos de seguridad encadenados" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 3</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="sg-chain">
+            <div class="sg-node" style="--sg-c:#2563eb">
+              <div><strong>SG-ALB</strong><br><span>HTTP <code>80</code> y HTTPS <code>443</code> desde <code>0.0.0.0/0</code></span></div>
+              <span class="badge-id">sg-08c9caa51848b497f</span>
+            </div>
+            <div class="sg-arrow">▼ solo puerto 80 desde SG-ALB ▼</div>
+            <div class="sg-node" style="--sg-c:#7c3aed">
+              <div><strong>SG-App</strong><br><span>Puerto <code>80</code> desde <code>SG-ALB</code> · <strong>0 puertos SSH</strong></span></div>
+              <span class="badge-id">sg-03bc28ed0e5e449d2</span>
+            </div>
+            <div class="sg-arrow">▼ solo puerto 3306 desde SG-App ▼</div>
+            <div class="sg-node" style="--sg-c:#dc2626">
+              <div><strong>SG-DB</strong><br><span>MySQL <code>3306</code> únicamente desde <code>SG-App</code></span></div>
+              <span class="badge-id">sg-0c067f26984ccf2c7</span>
+            </div>
+          </div>
+          <div class="result-pill">
+            <strong>Sin SG-Bastion:</strong> La administración usa <strong>AWS Systems Manager</strong> (Run Command / Session Manager con <code>LabInstanceProfile</code>), reduciendo la superficie de ataque.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.5 PILA 01-RED.YAML Y EXPORTACIONES -->
+    <section class="slide" data-group="2" data-color="#7c3aed" data-kind="content" data-title="2.5 Pila 01-red.yaml y Outputs/Export" style="--slide-color:#7c3aed">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">02 · Infraestructura como Código <span class="speaker-badge">Uhziel Elí Condori</span></div>
+        <h2>2.5 Pila <code>01-red.yaml</code> (25 Recursos) y Desacoplamiento IaC</h2>
+        <p class="header-summary">Alterna entre capturas de CREATE_COMPLETE y el código CloudFormation que exporta valores hacia las pilas 2 y 3.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2">
+          <div class="view-stage">
+            <div class="media-view img-box" data-caption="Figura 4 (E2) · Recursos creados por la pila libreria-u3-red">
+              <img src="img/fig04_e2_recursos_red.jpg" alt="Recursos de pila de red" />
+              <span class="zoom-hint">Clic para ampliar</span>
+            </div>
+            <div class="media-view img-box" data-caption="Figura 18 (E2) · Estado CREATE_COMPLETE de libreria-u3-red (09:41)">
+              <img src="img/fig18_e2_pila_red_complete.jpg" alt="Estado CREATE_COMPLETE" />
+              <span class="zoom-hint">Clic para ampliar</span>
+            </div>
+            <div class="media-view code-box" data-caption="Esquema del patrón CloudFormation descrito en la Sección 6.2 del informe">
+              <div class="code-topbar">
+                <span><strong>Patrón 01-red.yaml</strong> → 02-datos / 03-aplicacion</span>
+                <span>Esquema YAML (Sección 6.2)</span>
+              </div>
+              <pre class="code-pre" style="font-size: calc(0.84rem * var(--scale-meta)); line-height: 1.4; padding: 12px 15px;"><span class="code-line"># Pila 1: libreria-u3-red (01-red.yaml · 25 recursos)</span><span class="code-line">Outputs:</span><span class="code-line hl">  VPC + 6 Subredes + 3 SG  →  Export (Outputs públicos)</span><span class="code-line"> </span><span class="code-line"># Pila 2: libreria-u3-datos (02-datos.yaml)</span><span class="code-line hl">  Importa Subredes de Datos + SG-DB  →  Fn::ImportValue</span><span class="code-line"> </span><span class="code-line"># Pila 3: libreria-u3-aplicacion (03-aplicacion.yaml)</span><span class="code-line hl">  Importa Subredes Públicas/App + SG-ALB/App → Fn::ImportValue</span></pre>
+            </div>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Vista anterior ([)">◀</button>
+              <span class="img-counter">1 / 3</span>
+              <button class="img-btn img-next" title="Vista siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="flow-strip flow-anim" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="flow-node">
+              <span class="flow-step">09:41 · Pila 1</span>
+              <h4>01-red.yaml</h4>
+              <p>25 recursos: VPC, 6 subredes, IGW, NAT, 3 rutas y 3 SG.</p>
+            </div>
+            <div class="flow-node">
+              <span class="flow-step">09:44 · Pila 2</span>
+              <h4>02-datos.yaml</h4>
+              <p>Importa subredes de datos y <code>SG-DB</code>.</p>
+            </div>
+            <div class="flow-node">
+              <span class="flow-step">10:24 · Pila 3</span>
+              <h4>03-aplicacion.yaml</h4>
+              <p>Importa subredes públicas/app, <code>SG-ALB</code> y <code>SG-App</code>.</p>
+            </div>
+          </div>
+          <div class="card accent-left">
+            <h3>Reconstrucción en minutos</h3>
+            <p>Exportar identificadores desacopla el ciclo de vida: permite actualizar o eliminar la aplicación sin tocar la red ni los datos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN 03 · BLOQUE 3: WILLIAM DAVID ==================== -->
+    <section class="slide slide-title" data-group="3" data-color="#059669" data-kind="title" data-title="03 · Bloque William David (Datos)" style="--slide-color:#059669">
+      <div class="title-pill anim d1">Bloque 3 · Expositor: William David Ortiz Mamani</div>
+      <h1 class="anim d2">Capa de Datos, Migración 7R y Recuperación</h1>
+      <p class="title-sub anim d3">Pila <code>02-datos.yaml</code> (RDS Multi-AZ y S3 cifrado), estrategia <em>Replatform</em>, validación SHA-256 (14 tablas) y prueba RTO/RPO.</p>
+      <span class="section-num-bg">03</span>
+    </section>
+
+    <!-- 3.1 PILA 02-DATOS.YAML (RDS + S3) -->
+    <section class="slide" data-group="3" data-color="#059669" data-kind="content" data-title="3.1 RDS Multi-AZ y S3 Seguro (E6, E8)" style="--slide-color:#059669">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">03 · Almacenamiento y BD <span class="speaker-badge">William David Ortiz</span></div>
+        <h2>3.1 Pila <code>02-datos.yaml</code>: RDS MySQL Multi-AZ y S3 Cifrado</h2>
+        <p class="header-summary">Separación física de la base de datos respecto al cómputo con cifrado en reposo y tránsito obligatorio.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig08_e6_rds_multiaz_cifrado.jpg","caption":"Figura 8 (E6) · RDS libreria-u3-mysql: cifrado aws/rds y Multi-AZ en us-east-1a"},
+          {"src":"img/fig23_e6_rds_privada.jpg","caption":"Figura 23 (E6) · RDS disponible sin puerta de enlace a Internet (PubliclyAccessible=false)"},
+          {"src":"img/fig24_e6_rds_subredes.jpg","caption":"Figura 24 (E6) · Grupo de subredes privadas de datos asociado a RDS"},
+          {"src":"img/fig27_e8_s3_estaticos.jpg","caption":"Figura 27 (E8) · Bucket libreria-u3-estaticos con archivos y respaldo .sql"},
+          {"src":"img/fig28_e8_s3_bloqueo_publico.jpg","caption":"Figura 28 (E8) · Bloqueo total de acceso público activado en S3"},
+          {"src":"img/fig29_e8_s3_cifrado_tags.jpg","caption":"Figura 29 (E8) · Cifrado SSE-S3, versionado y etiquetas de proyecto"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evidencias RDS y S3 en AWS" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 6</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card accent-left">
+            <h3>Amazon RDS MySQL 8.4.11 (<code>db.t3.micro</code>)</h3>
+            <ul class="bullet-list">
+              <li><strong>Alta disponibilidad:</strong> Despliegue <code>MultiAZ</code> con réplica síncrona entre <code>us-east-1a</code> y <code>us-east-1b</code>.</li>
+              <li><strong>Seguridad y respaldo:</strong> <code>StorageEncrypted</code> (KMS <code>aws/rds</code>), <code>PubliclyAccessible: false</code>, contraseña <code>NoEcho</code>, retención <strong>7 días</strong> y <code>DeletionPolicy: Snapshot</code>.</li>
+              <li><strong>Mínimo privilegio:</strong> Un usuario independiente por microservicio (<code>ms_auth</code>, <code>ms_book</code>, <code>ms_cliente</code>, <code>ms_venta</code>).</li>
+            </ul>
+          </div>
+          <div class="card accent-left">
+            <h3>Amazon S3 (<code>libreria-u3-estaticos</code>)</h3>
+            <p>Almacena estáticos, <code>compose-u3.yml</code> y respaldos <code>.sql</code> con <strong>versionado</strong>, cifrado <strong>SSE-S3</strong>, bloqueo público total, ciclo de vida y política que deniega cualquier petición sin <strong>TLS</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.2 ESTRATEGIA REPLATFORM 7R -->
+    <section class="slide" data-group="3" data-color="#059669" data-kind="content" data-title="3.2 Estrategia 7R: Replatform" style="--slide-color:#059669">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">03 · Estrategia de Migración <span class="speaker-badge">William David Ortiz</span></div>
+        <h2>3.2 Elección del Modelo 7R (Replatform) y Plan en 6 Pasos</h2>
+        <p class="header-summary">Replatform permitió conservar intacto el código Spring Boot/Angular mientras se modernizaba la infraestructura limitante.</p>
+      </header>
+      <div class="full-body">
+        <div class="card-grid-3 anim d2">
+          <div class="card accent-left">
+            <h3>Por qué NO las otras 6 R</h3>
+            <p><strong>Retire/Retain:</strong> el negocio requiere el sistema. <strong>Rehost:</strong> mantenía MySQL dentro de la EC2. <strong>Repurchase/Relocate:</strong> no aplican. <strong>Refactor:</strong> reescribir a serverless excedía el plazo.</p>
+          </div>
+          <div class="card accent-left">
+            <h3>Qué cambia con Replatform</h3>
+            <p>MySQL en contenedor → <strong>RDS Multi-AZ</strong>; disco local → <strong>S3 cifrado</strong>; servidor único → <strong>AMI + ASG + ALB</strong>, manteniendo código e imágenes sin cambios.</p>
+          </div>
+          <div class="card accent-left">
+            <h3>Sin corte en el origen</h3>
+            <p>El servidor origen permaneció operativo y validado hasta comprobar el hash SHA-256 y los conteos idénticos por el DNS del ALB.</p>
+          </div>
+        </div>
+        <div class="flow-strip flow-anim anim d3" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="flow-node"><span class="flow-step">Paso 1</span><h4>Red y Datos</h4><p>Desplegar pilas <code>01-red</code> y <code>02-datos</code>.</p></div>
+          <div class="flow-node"><span class="flow-step">Paso 2</span><h4>Dump + Hash</h4><p><code>mysqldump --single-transaction</code> y SHA-256.</p></div>
+          <div class="flow-node"><span class="flow-step">Paso 3</span><h4>Copia a S3</h4><p>Subir <code>migracion_u3.sql</code> y estáticos.</p></div>
+          <div class="flow-node"><span class="flow-step">Paso 4</span><h4>Crear AMI</h4><p>Imagen del servidor con Docker y servicios.</p></div>
+          <div class="flow-node"><span class="flow-step">Paso 5</span><h4>Importar RDS</h4><p>Desde EC2 privada verificar hash e importar.</p></div>
+          <div class="flow-node"><span class="flow-step">Paso 6</span><h4>Validar ALB</h4><p>Comparar 14 tablas e iniciar sesión por ALB.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.3 INTEGRIDAD SHA-256 Y ROLLBACK -->
+    <section class="slide" data-group="3" data-color="#059669" data-kind="content" data-title="3.3 Integridad SHA-256, 14 Tablas y Rollback" style="--slide-color:#059669">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">03 · Validación y Reversión <span class="speaker-badge">William David Ortiz</span></div>
+        <h2>3.3 Integridad Criptográfica (SHA-256), 14 Tablas y Rollback (E7)</h2>
+        <p class="header-summary">Cero pérdida de registros validada byte a byte sobre las cuatro bases de microservicios.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig25_e7_mysqldump_sha256.jpg","caption":"Figura 25 (E7) · Exportación mysqldump en origen, cálculo SHA-256 y subida a S3"},
+          {"src":"img/fig26_e7_import_rds_sha256.jpg","caption":"Figura 26 (E7) · Verificación del mismo hash SHA-256 e importación en RDS"},
+          {"src":"img/fig11_e7_conteo_rds.jpg","caption":"Figura 11 (E7) · Conteo de registros en RDS idéntico al origen"},
+          {"src":"img/fig17_e1_bd_origen.jpg","caption":"Figura 17 (E1) · Base de datos de origen con registros iniciales (16/11/2026)"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evidencia de integridad y conteos en RDS" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 4</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <table class="clean-table compact-table">
+            <thead><tr><th>Base</th><th>Tabla</th><th>Origen</th><th>RDS</th></tr></thead>
+            <tbody>
+              <tr><td><code>ms_auth</code></td><td><code>auth_user</code> (contraseña BCrypt intacta)</td><td>3</td><td><strong>3</strong></td></tr>
+              <tr><td><code>ms_book</code></td><td><code>categoria</code> / <code>libro</code> / <code>provedores</code></td><td>9 / 20 / 1</td><td><strong>9 / 20 / 1</strong></td></tr>
+              <tr><td><code>ms_venta</code></td><td><code>servicio</code></td><td>50</td><td><strong>50</strong></td></tr>
+              <tr class="hl"><td><code>ms_venta</code></td><td><code>venta</code> / <code>venta_detalle</code> (S/ 2 448,50)</td><td>88 / 88</td><td><strong>88 / 88</strong></td></tr>
+              <tr><td>Resto (6 tablas)</td><td><code>carrito</code>, <code>cliente</code>, <code>vendedor</code>, <code>mov</code>, etc.</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+          <div class="card accent-left">
+            <h3>SHA-256 y Plan de Reversión</h3>
+            <p>Archivo <code>migracion_u3.sql</code> (<strong>36 230 bytes</strong>): hash idéntico <code>40db90050f169831…b52ca9</code>. Si falla la importación se repite desde S3 versionado; si falla la app se revierte DNS al origen (TTL 60 s) o se borra solo <code>03-aplicacion</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.4 RECUPERACIÓN ANTE DESASTRES RTO/RPO -->
+    <section class="slide" data-group="3" data-color="#059669" data-kind="content" data-title="3.4 Recuperación ante Desastres (RTO / RPO)" style="--slide-color:#059669">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">03 · Resiliencia de Datos <span class="speaker-badge">William David Ortiz</span></div>
+        <h2>3.4 Prueba Real de Snapshot, Restauración y Matriz RTO / RPO (E13)</h2>
+        <p class="header-summary">Restauración completa de RDS desde snapshot manual en subredes privadas validada en menos de 9 minutos.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig34_e13_snapshot_rds.jpg","caption":"Figura 34 (E13) · Snapshot manual libreria-u3-snapshot-manual-20261117 disponible (164 s)"},
+          {"src":"img/fig36_e13_conteo_restaurada.jpg","caption":"Figura 36 (E13) · Conteo idéntico de las 14 tablas sobre la instancia restaurada"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Evidencia de snapshot y restauración RDS" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 2</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="kpi-row">
+            <div class="kpi"><div class="val">164 s</div><div class="lbl">Creación de Snapshot</div></div>
+            <div class="kpi"><div class="val">498 s</div><div class="lbl">RTO BD restaurada (8m 18s)</div></div>
+            <div class="kpi"><div class="val">0 / ≤5m</div><div class="lbl">RPO prueba / PITR diseño</div></div>
+          </div>
+          <table class="clean-table compact-table">
+            <thead><tr><th>Escenario de falla</th><th>RTO</th><th>RPO</th></tr></thead>
+            <tbody>
+              <tr><td>Falla de instancia EC2 (probado)</td><td><strong>269 s</strong> (sin corte)</td><td><strong>0</strong> (sin estado)</td></tr>
+              <tr class="hl"><td>Restauración BD snapshot (probado)</td><td><strong>498 s</strong> (10:33→10:41)</td><td><strong>0 registros</strong></td></tr>
+              <tr><td>Falla de zona de BD (diseño Multi-AZ)</td><td>1–2 min (failover)</td><td>0 (réplica síncrona)</td></tr>
+              <tr><td>Corrupción lógica (diseño PITR)</td><td>≈ 10 min</td><td>≤ 5 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN 04 · BLOQUE COMPARTIDO: COSTOS E INNOVACIÓN ==================== -->
+    <section class="slide slide-title" data-group="4" data-color="#d97706" data-kind="title" data-title="04 · Costos e Innovación (Compartido)" style="--slide-color:#d97706">
+      <div class="title-pill anim d1">Bloque 4 · Exposición Compartida del Equipo</div>
+      <h1 class="anim d2">Optimización de Costos y Propuesta Big Data + IA</h1>
+      <p class="title-sub anim d3">Estimación en AWS Pricing Calculator (161,63 → ≈ 87 USD/mes) y analítica predictiva con Glue, Athena y SageMaker Canvas.</p>
+      <span class="section-num-bg">04</span>
+    </section>
+
+    <!-- 4.1 ESTIMACIÓN DE COSTOS -->
+    <section class="slide" data-group="4" data-color="#d97706" data-kind="content" data-title="4.1 Estimación Mensual Pricing Calculator" style="--slide-color:#d97706">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">04 · Análisis Económico <span class="speaker-badge">Equipo (Costos)</span></div>
+        <h2>4.1 Estimación 24/7 en AWS Pricing Calculator (161,63 USD/mes)</h2>
+        <p class="header-summary">Desglose por servicio bajo demanda en us-east-1 (730 h) vs. consumo real inferior a 7 USD en el Learner Lab.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig15_e14_pricing_detalle.jpg","caption":"Figura 15 (E14) · Detalle por servicio en AWS Pricing Calculator"},
+          {"src":"img/fig37_e14_pricing_resumen.jpg","caption":"Figura 37 (E14) · Resumen mensual (161,63 USD) y anual (1 939,56 USD)"}
+        ]'>
+          <div class="media-stage">
+            <img alt="AWS Pricing Calculator Librería Cielo" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 2</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card">
+            <h3>Costo mensual 24/7 por capa (Total: 161,63 USD)</h3>
+            <div class="bar-chart" style="margin-top:10px; gap:10px;">
+              <div class="bar-row"><span class="bar-lbl">EC2 (2×t3.medium)</span><div class="bar-track"><div class="bar-fill" style="--w:100%"></div></div><span class="bar-num">65,54 USD</span></div>
+              <div class="bar-row"><span class="bar-lbl">VPC (NAT + 3 IPv4)</span><div class="bar-track"><div class="bar-fill" style="--w:67.5%; --bar-c:#7c3aed"></div></div><span class="bar-num">44,25 USD</span></div>
+              <div class="bar-row"><span class="bar-lbl">RDS Multi-AZ</span><div class="bar-track"><div class="bar-fill" style="--w:44.9%; --bar-c:#059669"></div></div><span class="bar-num">29,42 USD</span></div>
+              <div class="bar-row"><span class="bar-lbl">ALB (10 GB/mes)</span><div class="bar-track"><div class="bar-fill" style="--w:26.8%; --bar-c:#2563eb"></div></div><span class="bar-num">17,60 USD</span></div>
+              <div class="bar-row"><span class="bar-lbl">CloudWatch + S3</span><div class="bar-track"><div class="bar-fill" style="--w:7.3%; --bar-c:#94a3b8"></div></div><span class="bar-num">4,82 USD</span></div>
+            </div>
+          </div>
+          <div class="result-pill">
+            <strong>Consumo real ejecutado:</strong> Inferior a <strong>7 USD</strong> del presupuesto de 50 USD del Learner Lab (3,8 USD antes de U3), eliminando recursos tras cada sesión.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4.2 MEDIDAS DE OPTIMIZACIÓN -->
+    <section class="slide" data-group="4" data-color="#d97706" data-kind="content" data-title="4.2 Medidas de Ahorro (161 → 87 USD)" style="--slide-color:#d97706">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">04 · Gobernanza de Costos <span class="speaker-badge">Equipo (Costos)</span></div>
+        <h2>4.2 Seis Medidas de Optimización y Etiquetado en 50 Recursos</h2>
+        <p class="header-summary">Aprovechar la infraestructura como código permite operar solo 12 horas diarias y reducir el gasto mensual a la mitad.</p>
+      </header>
+      <div class="full-body">
+        <table class="clean-table anim d2">
+          <thead>
+            <tr><th>Medida de optimización</th><th>Efecto técnico</th><th>Ahorro estimado</th></tr>
+          </thead>
+          <tbody>
+            <tr class="hl">
+              <td><strong>Horario de operación 12 h/día</strong> (ASG a 0, quitar NAT/ALB y detener RDS; reconstrucción IaC en ≈ 15 min)</td>
+              <td>Paga solo horas de uso comercial; almacenamiento S3/EBS se conserva</td>
+              <td><strong>≈ 75 USD/mes</strong> (161,63 → <strong>≈ 87</strong>)</td>
+            </tr>
+            <tr>
+              <td><strong>VPC Endpoint Gateway para S3</strong></td>
+              <td>El tráfico privado hacia S3 no cruza el NAT Gateway</td>
+              <td>Elimina cargo por GB del NAT</td>
+            </tr>
+            <tr>
+              <td><strong>Compute Savings Plan (1 o 3 años)</strong> para base de 2 EC2</td>
+              <td>Descuento por compromiso manteniendo flexibilidad de familia</td>
+              <td>Hasta <strong>30–50 %</strong> en EC2</td>
+            </tr>
+            <tr>
+              <td><strong>RDS Single-AZ</strong> en desarrollo y pruebas</td>
+              <td>Mitad del costo de instancia en entornos no productivos</td>
+              <td>≈ 12 USD/mes por entorno</td>
+            </tr>
+            <tr>
+              <td><strong>Ciclo de vida S3 + 50 recursos etiquetados</strong></td>
+              <td>Respaldos a Standard-IA a los 30 días + atribución con Cost Explorer</td>
+              <td>Visibilidad total y menor $/GB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4.3 PROPUESTA INNOVACIÓN BIG DATA + IA -->
+    <section class="slide" data-group="4" data-color="#d97706" data-kind="content" data-title="4.3 Propuesta Innovación (Big Data + IA)" style="--slide-color:#d97706">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">04 · Innovación sobre Datos <span class="speaker-badge">Equipo (Innovación)</span></div>
+        <h2>4.3 Analítica de Ventas y Pronóstico de Demanda (Big Data + IA)</h2>
+        <p class="header-summary">Convertir las ventas transaccionales en un data lake Parquet para anticipar quiebres de stock en campaña escolar.</p>
+      </header>
+      <div class="split-body">
+        <div class="media-panel anim d2" data-images='[
+          {"src":"img/fig16_innovacion_bigdata_ia.png","caption":"Figura 16 · Integración del pipeline Big Data e IA con el centro de datos U3"}
+        ]'>
+          <div class="media-stage">
+            <img alt="Arquitectura propuesta Big Data e IA" />
+            <span class="zoom-hint">Clic para ampliar</span>
+          </div>
+          <div class="media-bar">
+            <span class="media-caption"></span>
+            <div class="media-controls">
+              <button class="img-btn img-prev" title="Imagen anterior ([)">◀</button>
+              <span class="img-counter">1 / 1</span>
+              <button class="img-btn img-next" title="Imagen siguiente (])">▶</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel anim d3">
+          <div class="card accent-left">
+            <h3>Oportunidad de negocio</h3>
+            <p>En campaña escolar (febrero–marzo) se agotan artículos de alta rotación (ya existen <strong>6 productos con «Stock bajo»</strong>) mientras otros quedan inmovilizados.</p>
+          </div>
+          <div class="card accent-left">
+            <h3>Arquitectura propuesta (sin impactar RDS)</h3>
+            <ul class="bullet-list">
+              <li><strong>Big Data:</strong> Exportación diaria de snapshot RDS a S3 en formato <strong>Parquet</strong>, catalogada con <strong>AWS Glue Crawler</strong> y consultada con <strong>Amazon Athena</strong> (junto a logs de ALB y CloudWatch).</li>
+              <li><strong>IA (Series de Tiempo):</strong> <strong>Amazon SageMaker Canvas</strong> (sin código) entrena pronóstico semanal por producto y escribe la «reposición sugerida» hacia S3.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4.4 VIABILIDAD, RIESGOS Y FASES -->
+    <section class="slide" data-group="4" data-color="#d97706" data-kind="content" data-title="4.4 Costo, Riesgos y Fases de Innovación" style="--slide-color:#d97706">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">04 · Hoja de Ruta Analítica <span class="speaker-badge">Equipo (Innovación)</span></div>
+        <h2>4.4 Beneficios, Privacidad, Costo (≈ 11–12 USD/mes) y Fases</h2>
+        <p class="header-summary">Iniciativa de bajo costo marginal protegida mediante exportación agregada y anónima de datos.</p>
+      </header>
+      <div class="full-body">
+        <div class="card-grid-2 anim d2">
+          <table class="clean-table compact-table">
+            <thead><tr><th>Componente propuesto</th><th>Supuesto</th><th>USD/mes</th></tr></thead>
+            <tbody>
+              <tr><td>Exportación snapshot RDS → S3</td><td>≈ 1 GB / mes</td><td>≈ 0,01</td></tr>
+              <tr><td>AWS Glue Crawler</td><td>1 ejecución/día 5 min (2 DPU)</td><td>≈ 2,20</td></tr>
+              <tr><td>Amazon Athena</td><td>30 consultas/día (100 MB)</td><td>&lt; 1,00</td></tr>
+              <tr><td>SageMaker Canvas</td><td>2 sesiones 2 h/mes + 1 entren.</td><td>≈ 8,00</td></tr>
+              <tr><td>S3 Data Lake</td><td>5 GB Standard</td><td>≈ 0,12</td></tr>
+              <tr class="hl"><td colspan="2"><strong>Total estimado propuesta Big Data + IA</strong></td><td><strong>≈ 11–12</strong></td></tr>
+            </tbody>
+          </table>
+          <div class="card accent-left">
+            <h3>Beneficios, Riesgos y Privacidad</h3>
+            <ul class="bullet-list">
+              <li><strong>Beneficios:</strong> Menos quiebres de stock y menos capital inmovilizado sin tocar la BD productiva.</li>
+              <li><strong>Privacidad:</strong> Solo se exportan ventas agregadas por producto y semana (<strong>cero nombres ni datos de pago</strong>), en bucket cifrado y lectura restringida.</li>
+              <li><strong>Riesgos:</strong> Historial inicial corto y duplicados en catálogo.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flow-strip flow-anim anim d3" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="flow-node"><span class="flow-step">Fase 1 · Piloto (1 mes)</span><h4>Catálogo y Top 20</h4><p>Exportación Parquet, 5 consultas Athena y pronóstico para las 20 referencias top.</p></div>
+          <div class="flow-node"><span class="flow-step">Fase 2 · Validación</span><h4>Campaña Escolar</h4><p>Comparar predicción vs. ventas reales mediante error <strong>MAPE</strong> y ajustar.</p></div>
+          <div class="flow-node"><span class="flow-step">Fase 3 · Escalamiento</span><h4>Automatización</h4><p>Integrar «reposición sugerida» en inventario y reentrenamiento mensual.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN 05 · BLOQUE DE CIERRE ==================== -->
+    <section class="slide slide-title" data-group="5" data-color="#0891b2" data-kind="title" data-title="05 · Seguridad, Lecciones y Cierre" style="--slide-color:#0891b2">
+      <div class="title-pill anim d1">Bloque 5 · Cierre del Equipo</div>
+      <h1 class="anim d2">Seguridad Integral, Lecciones y Conclusiones</h1>
+      <p class="title-sub anim d3">Balance de controles U2 implementados, aprendizajes reales de operación y próximos pasos recomendados.</p>
+      <span class="section-num-bg">05</span>
+    </section>
+
+    <!-- 5.1 SEGURIDAD U2 Y LECCIONES APRENDIDAS -->
+    <section class="slide" data-group="5" data-color="#0891b2" data-kind="content" data-title="5.1 Controles U2 y Lecciones Aprendidas" style="--slide-color:#0891b2">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">05 · Balance Técnico <span class="speaker-badge">Equipo (Cierre)</span></div>
+        <h2>5.1 Controles de Unidad 2 Aplicados y Lecciones Reales</h2>
+        <p class="header-summary">Diez controles de seguridad trasladados a producción IaC y problemas operativos superados durante el despliegue.</p>
+      </header>
+      <div class="full-body">
+        <div class="card-grid-2 anim d2">
+          <div class="card accent-left">
+            <h3>10 Controles U2 en U3 (+3 pendientes)</h3>
+            <ul class="bullet-list">
+              <li><strong>Implementados:</strong> Segmentación de red, RDS privada, cifrado en reposo (EBS/RDS/S3) y tránsito TLS en S3, mínimo privilegio + IMDSv2, secretos en Parameter Store, cero SSH (SSM), CloudWatch+SNS, backups/snapshot y JWT/BCrypt.</li>
+              <li><strong>Pendientes de diseño:</strong> HTTPS 443 en ALB con certificado <strong>ACM</strong>, <strong>Amazon Cognito</strong> para MFA del acceso público y <code>require_secure_transport</code> interno en RDS.</li>
+            </ul>
+          </div>
+          <table class="clean-table compact-table">
+            <thead><tr><th>Problema encontrado</th><th>Solución / Qué haríamos distinto</th></tr></thead>
+            <tbody>
+              <tr><td>Carga de 484 MB a S3 cortada</td><td>Multiparte 16 MB → publicar en <strong>ECR</strong></td></tr>
+              <tr><td>8 JVM dispararon escalado inicial</td><td>Validó ASG → usar métrica por destino / warmup</td></tr>
+              <tr><td>App fallaba antes de importar BD</td><td>Importar antes y health check con BD</td></tr>
+              <tr><td>Error cálculo ALB (74 vs 17 USD)</td><td>Cambiar unidades horas → GB/mes en Calculator</td></tr>
+              <tr><td>Consola VPC en blanco / 4 h Lab</td><td>Validar por CLI/JSON y mantener 100 % en IaC</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5.2 CONCLUSIONES Y RECOMENDACIONES -->
+    <section class="slide" data-group="5" data-color="#0891b2" data-kind="content" data-title="5.2 Conclusiones y Recomendaciones" style="--slide-color:#0891b2">
+      <header class="slide-header anim d1">
+        <div class="kicker-sec">05 · Síntesis Final <span class="speaker-badge">Equipo (Cierre)</span></div>
+        <h2>5.2 Conclusiones del Proyecto y Recomendaciones Evolutivas</h2>
+        <p class="header-summary">Cumplimiento verificado de las seis exigencias de la guía práctica y hoja de ruta hacia producción continua.</p>
+      </header>
+      <div class="full-body">
+        <div class="card-grid-2 anim d2">
+          <div class="card accent-left">
+            <h3>Conclusiones clave</h3>
+            <ul class="bullet-list">
+              <li><strong>Alta disponibilidad y elasticidad:</strong> Tolera caída de servidor (reemplazo en <strong>269 s</strong> sin corte) y de zona (ALB + RDS Multi-AZ), escalando 2 → 4 → 2 automáticamente.</li>
+              <li><strong>Reproducibilidad IaC:</strong> Tres pilas modulares de CloudFormation reconstruyen red, datos y aplicación en minutos.</li>
+              <li><strong>Migración limpia:</strong> Estrategia <em>Replatform</em> sin alterar código, integridad SHA-256 exacta y recuperación probada (<strong>498 s RTO</strong>, <strong>0 RPO</strong>).</li>
+              <li><strong>Desacoplamiento:</strong> Extraer MySQL del servidor EC2 habilitó instancias intercambiables sin estado.</li>
+            </ul>
+          </div>
+          <div class="card accent-left">
+            <h3>Recomendaciones (siguiente iteración)</h3>
+            <ul class="bullet-list">
+              <li>Habilitar listener <strong>HTTPS (443)</strong> con certificado ACM para <code>libreria.hidrocomkallpa.site</code> y redirección 80 → 443.</li>
+              <li>Integrar MFA en el ALB mediante <strong>Amazon Cognito</strong> sin depender de estado local.</li>
+              <li>Migrar imágenes Docker a <strong>Amazon ECR</strong> y desplegar mediante <em>instance refresh</em>.</li>
+              <li>Mover imágenes de libros desde <code>ms-book</code> hacia <strong>S3</strong> (o EFS) para persistencia multi-instancia.</li>
+              <li>Programar apagado nocturno fuera de horario y ejecutar el piloto <strong>Glue + Athena + SageMaker Canvas</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CIERRE ==================== -->
+    <section class="slide slide-title" data-group="99" data-color="#1e293b" data-kind="title" data-title="Cierre — Gracias" style="--slide-color:#1e293b">
+      <div class="title-pill anim d1">Cierre · Grupo I · Cloud Computing 2026-2</div>
+      <h1 class="anim d2">Gracias</h1>
+      <p class="title-sub anim d3">
+        Centro de datos virtualizado en AWS para <strong>Librería Cielo</strong>: seguro, observable, reproducible con CloudFormation y listo para escalar.
+      </p>
+      <div class="cover-meta anim d4">
+        <span><strong>Jhon Alex Gutierrez Morales</strong> (Cómputo y Coordinación)</span>
+        <span><strong>Uhziel Elí Condori Rojas</strong> (Red e IaC)</span>
+        <span><strong>William David Ortiz Mamani</strong> (Datos y Migración)</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BARRA DE NAVEGACIÓN COMÚN -->
+  <nav id="bottomNav" class="bottom-nav" aria-label="Navegación de diapositivas">
+    <div class="nav-left">
+      <button id="btnPrev" class="nav-btn icon-only" title="Anterior (←)">◀</button>
+      <span id="slideCounter" class="slide-counter">01 / 27</span>
+      <button id="btnNext" class="nav-btn icon-only" title="Siguiente (→ / Espacio)">▶</button>
+      <button id="btnFs" class="nav-btn icon-only" title="Pantalla completa (F)">⛶</button>
+    </div>
+
+    <div id="navDots" class="nav-center" aria-label="Navegación por secciones"></div>
+
+    <div class="nav-right">
+      <button id="btnConfig" class="nav-btn icon-only" title="Configuración de la diapositiva (C)" aria-expanded="false" aria-controls="configPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button id="btnDrawer" class="nav-btn" title="Índice de diapositivas (M)">☰ <span class="btn-lbl-hide">Índice</span></button>
+    </div>
+  </nav>
+
+  <!-- PANEL FLOTANTE DE CONFIGURACIÓN ⚙️ -->
+  <aside id="configPanel" class="config-panel" aria-label="Configuración de visualización" hidden>
+    <div class="config-head">
+      <strong>⚙️ Ajustes de Diapositiva</strong>
+      <button id="btnCloseConfig" class="nav-btn icon-only cfg-close" title="Cerrar">✕</button>
+    </div>
+
+    <div class="config-group">
+      <label class="cfg-label">Tema de contenido</label>
+      <div class="cfg-pills" data-cfg-group="theme">
+        <button class="cfg-pill" data-val="light">☀️ Claro</button>
+        <button class="cfg-pill" data-val="dark">🌙 Oscuro</button>
+      </div>
+    </div>
+
+    <div class="config-group">
+      <label class="cfg-label">Posición de la barra</label>
+      <div class="cfg-pills" data-cfg-group="navPos">
+        <button class="cfg-pill" data-val="bottom">Abajo</button>
+        <button class="cfg-pill" data-val="top">Arriba</button>
+        <button class="cfg-pill" data-val="float">Flotante</button>
+        <button class="cfg-pill" data-val="autohide">Ocultar</button>
+      </div>
+    </div>
+
+    <div class="config-group">
+      <div class="cfg-row-head">
+        <label class="cfg-label">Escala general (todo ±)</label>
+        <span id="valScaleAll" class="cfg-val">100%</span>
+      </div>
+      <div class="cfg-stepper">
+        <button class="cfg-step" data-target="scaleAll" data-delta="-0.06">−1 pt</button>
+        <input id="rngScaleAll" type="range" min="0.82" max="1.36" step="0.06" value="1" />
+        <button class="cfg-step" data-target="scaleAll" data-delta="0.06">+1 pt</button>
+      </div>
+    </div>
+
+    <details class="config-details">
+      <summary>Ajuste independiente de letras</summary>
+      <div class="config-subgrid">
+        <div class="cfg-subrow">
+          <span>Títulos</span>
+          <input id="rngScaleTitle" type="range" min="0.82" max="1.35" step="0.05" value="1" />
+          <span id="valScaleTitle">100%</span>
+        </div>
+        <div class="cfg-subrow">
+          <span>Texto / Tarjetas</span>
+          <input id="rngScaleBody" type="range" min="0.82" max="1.35" step="0.05" value="1" />
+          <span id="valScaleBody">100%</span>
+        </div>
+        <div class="cfg-subrow">
+          <span>Tablas / Notas</span>
+          <input id="rngScaleMeta" type="range" min="0.82" max="1.35" step="0.05" value="1" />
+          <span id="valScaleMeta">100%</span>
+        </div>
+      </div>
+    </details>
+
+    <div class="config-actions">
+      <button id="btnToggleAnim" class="nav-btn cfg-act">✨ Animaciones: ON</button>
+      <button id="btnPrintPdf" class="nav-btn cfg-act">🖨️ PDF</button>
+      <button id="btnResetCfg" class="nav-btn cfg-act">↺ Reset</button>
+    </div>
+  </aside>
+
+  <!-- PANEL LATERAL DERECHO (ÍNDICE) -->
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <aside id="drawer" class="drawer" aria-label="Índice de diapositivas">
+    <div class="drawer-head">
+      <h3>Índice de la Presentación</h3>
+      <button id="btnCloseDrawer" class="nav-btn icon-only" title="Cerrar (Esc)">✕</button>
+    </div>
+    <div id="drawerList" class="drawer-list"></div>
+  </aside>
+
+  <!-- LIGHTBOX DE IMAGEN -->
+  <div id="lightbox" class="lightbox" title="Clic o Esc para cerrar">
+    <img id="lbImg" alt="" />
+    <p id="lbCap"></p>
+  </div>
+
+  <script src="deck-core.js"></script>
+</body>
+</html>
